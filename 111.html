@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>communions gift exchange :DD</title>
+  <style>
+    :root {
+      --bg-black: #000000;
+      --bg-card: #0c0c0c;
+      --bg-surface: #141414;
+      --text-primary: #e8e8e8;
+      --text-secondary: #8c8c8c;
+      --border-line: #242424;
+      --btn-bg: #e8e8e8;
+      --btn-text: #000000;
+      --btn-hover: #cccccc;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    body {
+      background-color: var(--bg-black);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      text-transform: lowercase;
+    }
+    header {
+      border-bottom: 1px solid var(--border-line);
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+    .container {
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 56px 24px;
+      flex: 1;
+    }
+    .login-box {
+      max-width: 420px;
+      margin: 72px auto 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-line);
+      padding: 36px;
+    }
+    .kicker {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+      min-height: 20px;
+    }
+    h1 {
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.25;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 14px;
+      background: #050505;
+      border: 1px solid var(--border-line);
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 160ms ease;
+    }
+    input[type="text"]:focus {
+      border-color: #777777;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      border: 1px solid var(--btn-bg);
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: transform 150ms ease, background-color 150ms ease, border-color 150ms ease;
+    }
+    .btn:hover {
+      background: var(--btn-hover);
+      border-color: var(--btn-hover);
+    }
+    .btn:active {
+      transform: translateY(1px);
+    }
+    .btn-outline {
+      background: #121212;
+      color: var(--text-primary);
+      border: 1px solid #2e2e2e;
+      font-weight: 400;
+    }
+    .btn-outline:hover {
+      background: #1d1d1d;
+      border-color: #4a4a4a;
+    }
+    .error-msg {
+      color: #d46a6a;
+      font-size: 12px;
+      margin-top: 12px;
+      display: none;
+    }
+    .view-panel {
+      display: none;
+    }
+    .summary-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-line);
+      margin-bottom: 32px;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    .stat-val {
+      font-size: 22px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-card);
+      border: 1px solid var(--border-line);
+    }
+    th, td {
+      text-align: left;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-line);
+    }
+    th {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      background: var(--bg-surface);
+    }
+    .price-col {
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+    .action-col {
+      text-align: right;
+      width: 150px;
+    }
+    .total-row td {
+      font-weight: 600;
+      background: var(--bg-surface);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="#" class="brand" id="nav-reset">secret santa gift exchange</a>
+    <div id="session-controls" style="display:none;">
+      <button class="btn btn-outline" id="logout-btn" style="padding: 7px 14px; font-size: 12px;">sign out</button>
+    </div>
+  </header>
+
+  <main class="container">
+   
+    <section id="login-view" class="login-box">
+      <div class="kicker" id="typewriter-login"></div>
+      <h1>access portal</h1>
+      <p class="subtitle">enter your unique access code below to view your assigned person and their wishlist.</p>
+      <form id="code-form" class="input-group" novalidate>
+        <input type="text" id="code-input" autocomplete="off" spellcheck="false" required />
+        <button type="submit" class="btn">enter</button>
+      </form>
+      <p id="error-text" class="error-msg">invalid code, check again</p>
+    </section>
+
+    <section id="dashboard-view" class="view-panel">
+      <div class="kicker" id="typewriter-dash"></div>
+      <h1 id="recipient-heading" style="margin-bottom: 6px; font-size: 28px;"></h1>
+      <p id="recipient-notes" class="subtitle" style="margin-bottom: 24px;"></p>
+
+      <div class="summary-bar">
+        <div>
+          <div class="stat-label">assigned recipient</div>
+          <div class="stat-val" id="stat-recipient"></div>
+        </div>
+        <div>
+          <div class="stat-label">total items</div>
+          <div class="stat-val" id="stat-count"></div>
+        </div>
+        <div>
+          <div class="stat-label">total wishlist price</div>
+          <div class="stat-val" id="stat-total"></div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>item & details</th>
+            <th>store</th>
+            <th class="price-col">price</th>
+            <th class="action-col">link</th>
+          </tr>
+        </thead>
+        <tbody id="items-body"></tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan="2">total price</td>
+            <td class="price-col" id="table-total"></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+
+  
+    <section id="admin-view" class="view-panel">
+      <div class="kicker" id="typewriter-admin"></div>
+      <h1 style="margin-bottom: 6px; font-size: 28px;">admin master directory (who has who)</h1>
+      <p class="subtitle" style="margin-bottom: 24px;">overview of all 10 players, their personal access codes, and who they are buying for.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>player (giver)</th>
+            <th>player access code</th>
+            <th>buying for (recipient)</th>
+            <th class="price-col">wishlist total</th>
+          </tr>
+        </thead>
+        <tbody id="admin-body"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    const ADMIN_CODE = "adm-9x4k7m2p8q5w3v6n1z8r4t0y";
+
+    // people
+    const ASSIGNMENTS = [
+      {
+        code: "4FUckyouMotherfuckerx9-4821",
+        giverName: "vaughn",
+        recipientName: "connor",
+        recipientNotes: "size large in hoodies/tees. prefers dark neutral colors.",
+        items: [
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          }
+        ]
+      },
+      {
+        code: "ffffConnor3111-7194",
+        giverName: "connor",
+        recipientName: "vaughn",
+        recipientNotes: "size medium/large. into gaming gear and everyday accessories.",
+        items: [
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          }
+        ]
+      },
+      {
+        code: "cggggxxaqgg44x127-2048",
+        giverName: "chase",
+        recipientName: "matt",
+        recipientNotes: "wears size large in tops. likes gym gear and everyday essentials.",
+        items: [
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          }
+        ]
+      },
+      {
+        code: "dont521-922316",
+        giverName: "matt",
+        recipientName: "hasan",
+        recipientNotes: "size medium in shirts. likes clean desk accessories and coffee gear.",
+        items: [
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          }
+        ]
+      },
+      {
+        code: "ssssssssvuross2-6480",
+        giverName: "hasan",
+        recipientName: "zach",
+        recipientNotes: "size large in hoodies. into music, audio, and casual streetwear.",
+        items: [
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          }
+        ]
+      },
+      {
+        code: "xnxxpornc8-122539",
+        giverName: "zach",
+        recipientName: "eddie",
+        recipientNotes: "size medium/large. likes tech organizers, games, and cozy loungewear.",
+        items: [
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          }
+        ]
+      },
+      {
+        code: "tqptqtitei4bfkvoe44-811275",
+        giverName: "eddie",
+        recipientName: "cooper",
+        recipientNotes: "size large. likes outdoor gear, hats, and durable everyday items.",
+        items: [
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          }
+        ]
+      },
+      {
+        code: "coopercoopercoozperdadadadddd6-3912",
+        giverName: "cooper",
+        recipientName: "billy",
+        recipientNotes: "size large in tops. into sports, hoodies, and room accessories.",
+        items: [
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          }
+        ]
+      },
+      {
+        code: "fbql9-5064",
+        giverName: "billy",
+        recipientName: "aiden",
+        recipientNotes: "size medium. likes sneakers, fragrance/grooming sets, and minimal clothing.",
+        items: [
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          }
+        ]
+      },
+      {
+        code: "aidende3798ienzzz31-7623",
+        giverName: "aiden",
+        recipientName: "chase",
+        recipientNotes: "size large. likes tech accessories, car/desk gear, and winter hoodies.",
+        items: [
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          },
+          {
+            name: "waiting on your recipient...",
+            brandOrStore: "amazon",
+            specification: "waiting on your recipient...",
+            price: 0,
+            url: "https://www.amazon.com"
+          }
+        ]
+      }
+    ];
+
+    function typeText(el, text) {
+      el.textContent = "";
+      let i = 0;
+      const iv = setInterval(() => {
+        el.textContent += text.charAt(i);
+        i++;
+        if (i >= text.length) clearInterval(iv);
+      }, 24);
+    }
+
+    typeText(document.getElementById("typewriter-login"), "communion 2k26 gift exchange · enter ur code");
+
+    const form = document.getElementById("code-form");
+    const input = document.getElementById("code-input");
+    const err = document.getElementById("error-text");
+    const loginView = document.getElementById("login-view");
+    const dashView = document.getElementById("dashboard-view");
+    const adminView = document.getElementById("admin-view");
+    const sessionControls = document.getElementById("session-controls");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const val = input.value.trim().toLowerCase();
+
+      if (val === ADMIN_CODE.toLowerCase()) {
+        err.style.display = "none";
+        loginView.style.display = "none";
+        dashView.style.display = "none";
+        adminView.style.display = "block";
+        sessionControls.style.display = "block";
+        typeText(document.getElementById("typewriter-admin"), "admin access verified · 10 participants active");
+
+        const adminBody = document.getElementById("admin-body");
+        adminBody.innerHTML = "";
+        ASSIGNMENTS.forEach(row => {
+          const total = row.items.reduce((sum, item) => sum + Number(item.price || 0), 0);
+          const tr = document.createElement("tr");
+          tr.innerHTML =
+            '<td style="font-weight:600;">' + row.giverName + '</td>' +
+            '<td style="color:#8c8c8c;">' + row.code + '</td>' +
+            '<td style="font-weight:600;">' + row.recipientName + '</td>' +
+            '<td class="price-col">$' + total.toFixed(2) + '</td>';
+          adminBody.appendChild(tr);
+        });
+        return;
+      }
+
+      const match = ASSIGNMENTS.find(d => d.code.toLowerCase() === val);
+      if (!match) {
+        err.style.display = "block";
+        return;
+      }
+
+      err.style.display = "none";
+      loginView.style.display = "none";
+      adminView.style.display = "none";
+      dashView.style.display = "block";
+      sessionControls.style.display = "block";
+
+      typeText(document.getElementById("typewriter-dash"), "signed in as " + match.giverName);
+      document.getElementById("recipient-heading").textContent = "you are buying for " + match.recipientName;
+      document.getElementById("recipient-notes").textContent = match.recipientNotes;
+      document.getElementById("stat-recipient").textContent = match.recipientName;
+      document.getElementById("stat-count").textContent = match.items.length + " items";
+
+      const total = match.items.reduce((acc, it) => acc + Number(it.price || 0), 0);
+      document.getElementById("stat-total").textContent = "$" + total.toFixed(2);
+      document.getElementById("table-total").textContent = "$" + total.toFixed(2);
+
+      const tbody = document.getElementById("items-body");
+      tbody.innerHTML = "";
+      match.items.forEach((it, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML =
+          '<td><div style="font-weight:600;">' + (idx + 1) + '. ' + it.name + '</div><div style="font-size:12px;color:#8c8c8c;">' + it.specification + '</div></td>' +
+          '<td style="color:#8c8c8c;">' + it.brandOrStore + '</td>' +
+          '<td class="price-col">$' + Number(it.price).toFixed(2) + '</td>' +
+          '<td class="action-col"><a class="btn btn-outline" style="padding:7px 14px;font-size:12px;" href="' + it.url + '" target="_blank" rel="noopener noreferrer">buy item</a></td>';
+        tbody.appendChild(tr);
+      });
+    });
+
+    function resetView(e) {
+      if (e) e.preventDefault();
+      input.value = "";
+      dashView.style.display = "none";
+      adminView.style.display = "none";
+      sessionControls.style.display = "none";
+      loginView.style.display = "block";
+    }
+    document.getElementById("logout-btn").addEventListener("click", resetView);
+    document.getElementById("nav-reset").addEventListener("click", resetView);
+  </script>
+</body>
+</html>
