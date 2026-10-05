@@ -8,13 +8,14 @@ module.exports = async (req, res) => {
   if (!process.env.DISCORD_WEBHOOK) return res.status(500).json({ error: 'webhook not configured' });
 
   try {
-    await fetch(process.env.DISCORD_WEBHOOK, {
+    const r = await fetch(process.env.DISCORD_WEBHOOK.trim(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: ` **${name}** just logged in` }),
+      body: JSON.stringify({ content: `🎁 **${name}** just logged in` }),
     });
+    if (!r.ok) return res.status(502).json({ error: 'discord rejected it', status: r.status });
   } catch (e) {
-    return res.status(502).json({ error: 'discord unreachable' });
+    return res.status(502).json({ error: 'discord unreachable', detail: String(e) });
   }
   return res.status(200).json({ ok: true });
 };
