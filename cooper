@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        img {
+            max-width: 80%;
+            max-height: 80%;
+        }
+    </style>
+</head>
+<body>
+
+    <img src="https://i.ibb.co/j9ZdxLwz/IMG-8524.png" alt="Image">
+
+</body>
+</html>
