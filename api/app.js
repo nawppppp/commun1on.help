@@ -121,6 +121,6 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: 'bad request' });
     }
   } catch (e) {
-    return res.status(500).json({ error: 'something went wrong on the server.' });
+    return res.status(500).json({ error: 'server error: ' + e.message });
   }
 };
