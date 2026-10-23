@@ -1,3 +1,10 @@
 {
-  "cleanUrls": true
+  "buildCommand": "vite build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/api/auth/url", "destination": "/api/auth/url" },
+    { "source": "/auth/callback", "destination": "/api/auth/callback" },
+    { "source": "/auth/callback/", "destination": "/api/auth/callback" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
